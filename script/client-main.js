@@ -292,6 +292,7 @@ var createCards = function() {
             flipCard(this.n);
         };
 
+        cards[n].containerElem = cardContainerView;
         cards[n].elem = cardView;
         cards[n].frontSideElem = cardFrontSideView;
     }
@@ -305,6 +306,7 @@ var startFlip = -1;
 var flipCard = function(n) {
     if (locked || !cards[n].flipped) return;
     if (startFlip != -1) {
+
         locked = true;
         cards[n].flipped = false;
         cards[n].frontSideElem.style.display = cards[n].flipped ? "none" : 
@@ -331,7 +333,16 @@ var flipCard = function(n) {
             }.bind(cards[n]), 1000);
         }
         else {
+            cards[n].elem.className = "";
             sfxPool.play("audio/correct-choice-sfx.wav");
+
+            for (var k = 0; k < cards.length; k++)
+            cards[k].containerElem.style.zIndex = "15";
+
+            cards[n].containerElem.style.zIndex = "25";
+ 
+            cards[n].elem.className = 
+            "animate__animated animate__flip";
 
             animate(n, startFlip);
 
