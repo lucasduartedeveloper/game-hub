@@ -156,6 +156,7 @@ $(document).ready(function() {
             return -1+Math.floor(Math.random()*3);
         });
         createCards();
+        cardCountView.innerText = cardCount[difficulty]+" cards";
 
         setTimeout(function() {
             for (var n = 0; n < cards.length; n++) {
@@ -354,16 +355,17 @@ var flipCard = function(n) {
     "initial" : "none";
     startFlipIndicatorView.innerText = "start flip: "+startFlip;
 
-    if (lifeCount == 0 || checkCards()) {
+    if (lifeCount == 0 && !checkCards()) {
+        sfxPool.play("audio/failure-sfx.wav");
+        playView.src = "img/play-again.png";
+        playView.style.display = "initial";
+    }
+    else if (checkCards()) {
         playView.src = "img/play-again.png";
         playView.style.display = "initial";
 
-        if (checkCards()) {
-            difficulty += 1;
-            cardCountView.innerText = cardCount[difficulty]+" cards";
-
-            addressView.style.display = "initial";
-        }
+        difficulty += 1;
+        addressView.style.display = "initial";
     }
 };
 
