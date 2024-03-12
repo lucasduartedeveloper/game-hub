@@ -6,9 +6,29 @@
 <link rel="stylesheet" href="game.css">
 </head>
 <body>
-TEXTO
 <script>
 <script src="//cdn.jsdelivr.net/npm/eruda"></script>
+<style>
+    .html, body {
+        background: #000
+    }
+
+    .spinner {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background: radial-gradient(farthest-side,#ffffff 94%,#0000) top/5px 5px no-repeat,
+               conic-gradient(#0000 30%,#ffffff);
+        -webkit-mask: radial-gradient(farthest-side,#0000 calc(100% - 5px),#000 0);
+        animation: spinner-c7wet2 1s infinite linear;
+    }
+
+    @keyframes spinner-c7wet2 {
+        100% {
+           transform: rotate(1turn);
+    }
+}
+</style>
 <script>
     var sw = window.innerWidth;
     var sh = window.innerHeight;
@@ -22,15 +42,25 @@ TEXTO
     iframe.style.top = ((window.innerHeight/2)-(334.5))+"px";
     iframe.style.width = (360)+"px";
     iframe.style.height = (669)+"px";
-    iframe.style.border = "2px solid #ccc";
+    iframe.style.border = "0px solid #ccc";
     iframe.src = ("https://game-hub-ksxb.onrender.com/index.php");
     iframe.style.transform = "scale("+scale+")";
     document.body.appendChild(iframe);
 
+    var loadingImageView = document.createElement("div");
+    loadingImageView.style.position = "absolute";
+    loadingImageView.className = "spinner";
+    loadingImageView.style.left = ((sw/2)-25)+"px";
+    loadingImageView.style.top = ((sh/2)-100)+"px";
+    loadingImageView.style.width = (50)+"px";
+    loadingImageView.style.height = (50)+"px";
+    document.body.appendChild(loadingImageView);
+
     var loadingView = document.createElement("span");
     loadingView.style.position = "absolute";
-    loadingView.innerText = "LOADING";
+    loadingView.innerText = "LOADING...";
     loadingView.style.color = "#fff";
+    loadingView.style.fontFamily = "Arial";
     loadingView.style.textAlign = "center";
     loadingView.style.left = ((sw/2)-50)+"px";
     loadingView.style.top = ((sh/2)-25)+"px";
@@ -39,6 +69,7 @@ TEXTO
     document.body.appendChild(loadingView);
 
     iframe.onload = function() {
+        loadingImageView.style.display = "none";
         loadingView.style.display = "none";
     };
 </script>

@@ -295,8 +295,7 @@ var flipCard = function(n) {
                 cards[startFlip].frontSideElem.style.display = "none";
 
                 startFlip = -1;
-                if (lifeCount > 0) locked = false;
-
+                locked = false;
                 lockedIndicatorView.innerText = "locked: "+locked;
 
                 startFlipIndicatorView.style.display = startFlip != -1 ? 
