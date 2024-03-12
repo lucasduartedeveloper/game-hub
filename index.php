@@ -21,8 +21,6 @@ $thirdpart_script = [
 
 ];
 
-$preffix = "memory-game/";
-
 $script = [
     0 => "script/websocket.js",
     1 => "script/gyro-helper.js",
@@ -74,7 +72,7 @@ echo "<!-- ".$rnd." -->";
 foreach ($style as $a) {
    echo 
    "<link rel=\"stylesheet\" href=\"".
-   $preffix.$a."?v=".$rnd."\">";
+   $a."?v=".$rnd."\">";
 }
 echo "\n";
 ?>
@@ -137,7 +135,7 @@ foreach ($thirdpart_script as $a) {
 foreach ($script as $a) {
    echo 
    "<script src=\"".
-   $preffix.$a."?v=".$rnd."\"></script>";
+   $a."?v=".$rnd."\"></script>";
 }
 foreach ($module as $a) {
    echo 
