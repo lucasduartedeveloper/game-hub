@@ -117,6 +117,20 @@ $(document).ready(function() {
     addressView.style.zIndex = "15";
     document.body.appendChild(addressView);
 
+    cardCount = [ 8, 10, 12, 14, 16, 18, 20 ];
+
+    cardCountView = document.createElement("span");
+    cardCountView.style.position = "absolute";
+    cardCountView.style.color = "#fff";
+    cardCountView.innerText = cardCount[difficulty]+" cards";
+    cardCountView.style.textAlign = "left";
+    cardCountView.style.left = (10)+"px";
+    cardCountView.style.top = ((sh/2)-(sw/2)-35)+"px";
+    cardCountView.style.width = (100)+"px";
+    cardCountView.style.height = (25)+"px";
+    cardCountView.style.zIndex = "15";
+    document.body.appendChild(cardCountView);
+
     playView.onclick = function() {
         playView.style.display = "none";
         locked = true;
@@ -127,6 +141,15 @@ $(document).ready(function() {
             cards[n].flipped = true;
             cards[n].frontSideElem.style.display = cards[n].flipped ? "none" :
             "initial";
+        }
+
+        cards = [];
+        for (var n = 0; n < cardCount[difficulty]; n++) {
+            var obj = {
+                n: Math.floor(n/2),
+                flipped: true
+            };
+            cards.push(obj);
         }
 
         cards.sort(function(a, b) {
@@ -273,6 +296,8 @@ var createCards = function() {
     }
 };
 
+var difficulty = 0;
+
 var lifeCount = 3;
 var locked = true;
 var startFlip = -1;
@@ -333,8 +358,12 @@ var flipCard = function(n) {
         playView.src = "img/play-again.png";
         playView.style.display = "initial";
 
-        if (checkCards())
-        addressView.style.display = "initial";
+        if (checkCards()) {
+            difficulty += 1;
+            cardCountView.innerText = cardCount[difficulty]+" cards";
+
+            addressView.style.display = "initial";
+        }
     }
 };
 
