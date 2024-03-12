@@ -81,27 +81,63 @@ $(document).ready(function() {
 
     playView = document.createElement("img");
     playView.style.position = "absolute";
-    playView.style.display = "none";
+    //playView.style.display = "none";
     playView.style.left = ((sw/2)-50)+"px";
     playView.style.top = ((sh/2)-(sw/2)-50)+"px";
     playView.style.width = (100)+"px";
-    playView.style.height = (25)+"px";
-    playView.style.objectFit = "cover";
-    playView.src = "img/play-again.png";
+    playView.style.height = (35)+"px";
+    playView.style.objectFit = "contain";
+    playView.src = "img/play.png";
     playView.style.zIndex = "15";
     document.body.appendChild(playView);
 
+    lifeCountView = document.createElement("div");
+    lifeCountView.style.position = "absolute";
+    lifeCountView.style.color = "#fff";
+    lifeCountView.style.textAlign = "center";
+    lifeCountView.style.left = ((sw/2)-50)+"px";
+    lifeCountView.style.top = ((sh/2)-(sw/2)-100)+"px";
+    lifeCountView.style.width = (100)+"px";
+    lifeCountView.style.height = (35)+"px";
+    lifeCountView.style.zIndex = "15";
+    document.body.appendChild(lifeCountView);
+
+    drawLifeCount();
+
     playView.onclick = function() {
         playView.style.display = "none";
+        locked = true;
+        lifeCount = 3;
+        drawLifeCount();
+
         for (var n = 0; n < cards.length; n++) {
             cards[n].flipped = true;
             cards[n].frontSideElem.style.display = cards[n].flipped ? "none" :
             "initial";
-
-            cards.sort(function(a, b) {
-                return -1+Math.floor(Math.random()*3);
-            });
         }
+
+        cards.sort(function(a, b) {
+            return -1+Math.floor(Math.random()*3);
+        });
+        createCards();
+
+        setTimeout(function() {
+            for (var n = 0; n < cards.length; n++) {
+                cards[n].flipped = false;
+                cards[n].frontSideElem.style.display = 
+                cards[n].flipped ? "none" : "initial";
+            }
+
+            setTimeout(function() {
+                for (var n = 0; n < cards.length; n++) {
+                    cards[n].flipped = true;
+                    cards[n].frontSideElem.style.display = 
+                    cards[n].flipped ? "none" :
+                    "initial";
+                }
+                locked = false;
+            }, 5000);
+        }, 1000);
     };
 
     lockedIndicatorView = document.createElement("span");
@@ -138,6 +174,21 @@ $(document).ready(function() {
     document.body.appendChild(cardsContainerView);
 
     var size = ((sw-60)/5);
+
+    createCards();
+});
+
+var drawLifeCount = function() {
+    var html = "";
+    for (var n = 0; n < 3; n++) {
+        if (lifeCount >= (n+1))
+        html += "<i class=\"fa-solid fa-heart\"></i>";
+    }
+    lifeCountView.innerHTML = html;
+};
+
+var createCards = function() {
+    cardsContainerView.innerHTML = "";
 
     for (var n = 0; n < cards.length; n++) {
         var x = (n%5);
@@ -207,9 +258,10 @@ $(document).ready(function() {
         cards[n].elem = cardView;
         cards[n].frontSideElem = cardFrontSideView;
     }
-});
+};
 
-var locked = false;
+var lifeCount = 3;
+var locked = true;
 var startFlip = -1;
 var flipCard = function(n) {
     if (locked || !cards[n].flipped) return;
@@ -220,6 +272,9 @@ var flipCard = function(n) {
         "initial";
 
         if (cards[n].n != cards[startFlip].n) {
+            lifeCount -= 1;
+            drawLifeCount();
+
             setTimeout(function() {
                 this.flipped = true;
                 cards[startFlip].flipped = true;
@@ -260,8 +315,8 @@ var flipCard = function(n) {
     "initial" : "none";
     startFlipIndicatorView.innerText = "start flip: "+startFlip;
 
-    if (checkCards()) {
-        playView.innerText = "PLAY AGAIN";
+    if (lifeCount == 0 || checkCards()) {
+        playView.src = "img/play-again.png";
         playView.style.display = "initial";
     }
 };
