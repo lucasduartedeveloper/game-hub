@@ -104,6 +104,19 @@ $(document).ready(function() {
 
     drawLifeCount();
 
+    addressView = document.createElement("span");
+    addressView.style.position = "absolute";
+    //addressView.style.display = "none";
+    addressView.style.color = "#fff";
+    addressView.innerText = "@lynaritaa";
+    addressView.style.textAlign = "center";
+    addressView.style.left = ((sw/2)-50)+"px";
+    addressView.style.top = ((sh/2)+(sw/2)+50)+"px";
+    addressView.style.width = (100)+"px";
+    addressView.style.height = (35)+"px";
+    addressView.style.zIndex = "15";
+    document.body.appendChild(addressView);
+
     playView.onclick = function() {
         playView.style.display = "none";
         locked = true;
@@ -318,6 +331,9 @@ var flipCard = function(n) {
     if (lifeCount == 0 || checkCards()) {
         playView.src = "img/play-again.png";
         playView.style.display = "initial";
+
+        if (checkCards())
+        addressView.style.display = "initial";
     }
 };
 
