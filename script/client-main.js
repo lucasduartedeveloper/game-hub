@@ -45,7 +45,7 @@ $(document).ready(function() {
 
     pictureView = document.createElement("canvas");
     pictureView.style.position = "absolute";
-    pictureView.style.background = "#fff";
+    pictureView.style.background = "#334";
     pictureView.width = (sw);
     pictureView.height = (sh); 
     pictureView.style.left = (0)+"px";
@@ -68,15 +68,26 @@ $(document).ready(function() {
     });
     console.log(cards);
 
-    playView = document.createElement("span");
+    titleView = document.createElement("img");
+    titleView.style.position = "absolute";
+    titleView.style.left = ((sw/2)-50)+"px";
+    titleView.style.top = ((sh/2)-(sw/2)-150)+"px";
+    titleView.style.width = (100)+"px";
+    titleView.style.height = (50)+"px";
+    titleView.style.objectFit = "cover";
+    titleView.src = "img/title-0.png";
+    titleView.style.zIndex = "15";
+    document.body.appendChild(titleView);
+
+    playView = document.createElement("img");
     playView.style.position = "absolute";
     playView.style.display = "none";
-    playView.innerText = "PLAY";
-    playView.style.textAlign = "center";
     playView.style.left = ((sw/2)-50)+"px";
     playView.style.top = ((sh/2)-(sw/2)-50)+"px";
     playView.style.width = (100)+"px";
     playView.style.height = (25)+"px";
+    playView.style.objectFit = "cover";
+    playView.src = "img/play-again.png";
     playView.style.zIndex = "15";
     document.body.appendChild(playView);
 
@@ -86,6 +97,10 @@ $(document).ready(function() {
             cards[n].flipped = true;
             cards[n].frontSideElem.style.display = cards[n].flipped ? "none" :
             "initial";
+
+            cards.sort(function(a, b) {
+                return -1+Math.floor(Math.random()*3);
+            });
         }
     };
 
@@ -116,7 +131,9 @@ $(document).ready(function() {
     cardsContainerView.style.left = (0)+"px";
     cardsContainerView.style.top = ((sh/2)-(sw/2))+"px";
     cardsContainerView.style.width = (sw)+"px";
-    cardsContainerView.style.height = (sw)+"px";
+    cardsContainerView.style.height = ((sw/5)*4)+"px";
+    cardsContainerView.style.boxShadow = 
+    "inset 0px 0px 5px #000";
     cardsContainerView.style.zIndex = "15";
     document.body.appendChild(cardsContainerView);
 
@@ -143,7 +160,7 @@ $(document).ready(function() {
         cardView.style.top = (0)+"px";
         cardView.style.width = (sw/5)+"px";
         cardView.style.height = (sw/5)+"px";
-        cardView.style.border = "1px solid #000";
+        cardView.style.border = "1px solid #fff";
         cardView.style.borderRadius = "5px";
         cardView.style.overflow = "hidden";
         cardView.style.transformStyle = "preserve-3d";
@@ -219,6 +236,9 @@ var flipCard = function(n) {
             }.bind(cards[n]), 1000);
         }
         else {
+            sfxPool.play("audio/correct-choice-sfx.wav");
+            animate(n, startFlip);
+
             startFlip = -1;
             locked = false;
 
@@ -244,6 +264,16 @@ var flipCard = function(n) {
         playView.innerText = "PLAY AGAIN";
         playView.style.display = "initial";
     }
+};
+
+var animate = function(a, b) {
+    cards[a].elem.style.outline = "5px solid #77f";
+    cards[b].elem.style.outline = "5px solid #77f";
+
+    setTimeout(function() {
+        cards[a].elem.style.outline = "initial";
+        cards[b].elem.style.outline = "initial";
+    }, 1000);
 };
 
 var checkCards = function() {
