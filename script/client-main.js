@@ -332,6 +332,7 @@ var flipCard = function(n) {
         }
         else {
             sfxPool.play("audio/correct-choice-sfx.wav");
+
             animate(n, startFlip);
 
             startFlip = -1;
@@ -356,7 +357,6 @@ var flipCard = function(n) {
     startFlipIndicatorView.innerText = "start flip: "+startFlip;
 
     if (lifeCount == 0 && !checkCards()) {
-        sfxPool.play("audio/failure-sfx.wav");
         playView.src = "img/play-again.png";
         playView.style.display = "initial";
     }
