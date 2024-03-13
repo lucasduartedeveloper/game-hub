@@ -117,6 +117,19 @@ $(document).ready(function() {
     addressView.style.zIndex = "15";
     document.body.appendChild(addressView);
 
+    timerView = document.createElement("span");
+    timerView.style.position = "absolute";
+    //addressView.style.display = "none";
+    timerView.style.color = "#fff";
+    timerView.innerText = "00:00.000";
+    timerView.style.textAlign = "center";
+    timerView.style.left = (sw-100)+"px";
+    timerView.style.top = ((sh/2)-(sw/2)-35)+"px";
+    timerView.style.width = (100)+"px";
+    timerView.style.height = (35)+"px";
+    timerView.style.zIndex = "15";
+    document.body.appendChild(timerView);
+
     cardCount = [ 8, 10, 12, 14, 16, 18, 20 ];
 
     cardCountView = document.createElement("span");
@@ -133,8 +146,10 @@ $(document).ready(function() {
 
     playView.onclick = function() {
         playView.style.display = "none";
+        timerView.innerText = "00:00.000";
+
         locked = true;
-        lifeCount = 3;
+        lifeCount = 5;
         drawLifeCount();
 
         for (var n = 0; n < cards.length; n++) {
@@ -173,6 +188,9 @@ $(document).ready(function() {
                     "initial";
                 }
                 locked = false;
+
+                startTime = new Date().getTime();
+                timerPaused = false;
             }, 5000);
         }, 1000);
     };
@@ -212,12 +230,27 @@ $(document).ready(function() {
 
     var size = ((sw-60)/5);
 
+    animate();
+
     createCards();
 });
 
+var startTime = 0;
+var timerPaused = true;
+
+var animate = function() {
+    var currentTime = new Date().getTime();
+    requestAnimationFrame(animate);
+
+    if (timerPaused) return;
+
+    timerView.innerText = 
+    moment(currentTime-startTime).format("mm:ss.SSS");
+};
+
 var drawLifeCount = function() {
     var html = "";
-    for (var n = 0; n < 3; n++) {
+    for (var n = 0; n < 5; n++) {
         if (lifeCount >= (n+1))
         html += "<i class=\"fa-solid fa-heart\"></i>";
     }
@@ -300,7 +333,7 @@ var createCards = function() {
 
 var difficulty = 0;
 
-var lifeCount = 3;
+var lifeCount = 5;
 var locked = true;
 var startFlip = -1;
 var flipCard = function(n) {
@@ -344,7 +377,7 @@ var flipCard = function(n) {
             cards[n].elem.className = 
             "animate__animated animate__flip";
 
-            animate(n, startFlip);
+            animateUnlock(n, startFlip);
 
             startFlip = -1;
             locked = false;
@@ -368,10 +401,14 @@ var flipCard = function(n) {
     startFlipIndicatorView.innerText = "start flip: "+startFlip;
 
     if (lifeCount == 0 && !checkCards()) {
+        timerPaused = true;
+
         playView.src = "img/play-again.png";
         playView.style.display = "initial";
     }
     else if (checkCards()) {
+        timerPaused = true;
+
         playView.src = "img/play-again.png";
         playView.style.display = "initial";
 
@@ -380,7 +417,7 @@ var flipCard = function(n) {
     }
 };
 
-var animate = function(a, b) {
+var animateUnlock = function(a, b) {
     cards[a].elem.style.outline = "5px solid #77f";
     cards[b].elem.style.outline = "5px solid #77f";
 
