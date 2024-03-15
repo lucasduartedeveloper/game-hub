@@ -180,6 +180,19 @@ $(document).ready(function() {
         }
     };
 
+    resultView = document.createElement("span");
+    resultView.style.position = "absolute";
+    resultView.style.display = "none";
+    resultView.style.color = "#fff";
+    resultView.style.fontSize = "25px";
+    resultView.style.textAlign = "center";
+    resultView.style.left = ((sw/2)-50)+"px";
+    resultView.style.top = ((sh/2)-(sw/5)-17.5)+"px";
+    resultView.style.width = (100)+"px";
+    resultView.style.height = (35)+"px";
+    resultView.style.zIndex = "15";
+    document.body.appendChild(resultView);
+
     cardCount = [ 8, 10, 12, 14, 16, 18, 20 ];
 
     cardCountView = document.createElement("span");
@@ -195,10 +208,12 @@ $(document).ready(function() {
     document.body.appendChild(cardCountView);
 
     playView.onclick = function() {
+        resultView.style.display = "none";
         playView.style.display = "none";
         timerView.innerText = "00:00.000";
 
         locked = true;
+        totalLifeCount += 5;
         lifeCount = 5;
         drawLifeCount();
 
@@ -285,7 +300,26 @@ $(document).ready(function() {
     createCards();
 });
 
+var totalLifeCount = 0;
+var remainingLifeCount = 0;
+var elapsedTime = 0;
+var showResult = function() {
+    var p = (100/totalLifeCount)*remainingLifeCount;
+
+    cards = [];
+    cardsContainerView.innerHTML = "";
+    resultView.style.display = "initial";
+
+    resultView.innerText = p.toFixed(2)+"%\n"+
+    moment(elapsedTime).format("mm:ss.SSS");
+
+    totalLifeCount = 0;
+    remainingLifeCount = 0;
+    elapsedTime = 0;
+};
+
 var startTime = 0;
+var timerTime = 0;
 var timerPaused = true;
 
 var animate = function() {
@@ -294,8 +328,9 @@ var animate = function() {
 
     if (timerPaused) return;
 
+    timerTime = (currentTime-startTime);
     timerView.innerText = 
-    moment(currentTime-startTime).format("mm:ss.SSS");
+    moment(timerTime).format("mm:ss.SSS");
 };
 
 var drawLifeCount = function() {
@@ -463,17 +498,25 @@ var flipCard = function(n) {
 
     if (lifeCount == 0 && !checkCards()) {
         timerPaused = true;
+        elapsedTime += timerTime;
 
         playView.src = "img/play-again.png";
         playView.style.display = "initial";
     }
     else if (checkCards()) {
         timerPaused = true;
+        remainingLifeCount += lifeCount;
+        elapsedTime += timerTime;
+
+        if (difficulty == 6) {
+            showResult();
+        }
+        else 
+        difficulty += 1;
 
         playView.src = "img/play-again.png";
         playView.style.display = "initial";
 
-        difficulty += 1;
         addressView.style.display = "initial";
     }
 };
