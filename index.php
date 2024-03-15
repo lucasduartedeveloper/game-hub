@@ -43,9 +43,6 @@ echo "<!-- ".$rnd." -->";
 <!DOCTYPE html>
 <html>
 <head>
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1241141335840661"
-     crossorigin="anonymous"></script>
-
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
@@ -85,6 +82,10 @@ echo "\n";
  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 
 <title></title>
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1241141335840661"
+     crossorigin="anonymous"></script>
+
 </head>
 <body>
 
