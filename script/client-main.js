@@ -130,6 +130,56 @@ $(document).ready(function() {
     timerView.style.zIndex = "15";
     document.body.appendChild(timerView);
 
+    backgroundNo = 0;
+
+    background0View = document.createElement("img");
+    background0View.style.position = "absolute";
+    background0View.style.left = (sw-70)+"px";
+    background0View.style.top = ((sh/2)-(sw/2)-70)+"px";
+    background0View.style.width = (25)+"px";
+    background0View.style.height = (25)+"px";
+    background0View.src = "img/card-backside-0.png";
+    background0View.style.objectFit = "cover";
+    background0View.style.border = "1px solid #fff";
+    background0View.style.outline = "1px solid #fff";
+    background0View.style.outlineOffset =  "5px";
+    background0View.style.zIndex = "15";
+    document.body.appendChild(background0View);
+
+    background0View.onclick = function() {
+        backgroundNo = 0;
+        background0View.style.outline = "1px solid #fff";
+        background1View.style.outline = "initial";
+
+        for (var n = 0; n < cards.length; n++) {
+            cards[n].backSideElem.src = "img/card-backside-0.png";
+        }
+    };
+
+    background1View = document.createElement("img");
+    background1View.style.position = "absolute";
+    background1View.style.left = (sw-35)+"px";
+    background1View.style.top = ((sh/2)-(sw/2)-70)+"px";
+    background1View.style.width = (25)+"px";
+    background1View.style.height = (25)+"px";
+    background1View.src = "img/card-backside-1.png";
+    background1View.style.objectFit = "cover";
+    background1View.style.border = "1px solid #fff";
+    background1View.style.outline = "initial";
+    background1View.style.outlineOffset =  "5px";
+    background1View.style.zIndex = "15";
+    document.body.appendChild(background1View);
+
+    background1View.onclick = function() {
+        backgroundNo = 1;
+        background1View.style.outline = "1px solid #fff";
+        background0View.style.outline = "initial";
+
+        for (var n = 0; n < cards.length; n++) {
+            cards[n].backSideElem.src = "img/card-backside-1.png";
+        }
+    };
+
     cardCount = [ 8, 10, 12, 14, 16, 18, 20 ];
 
     cardCountView = document.createElement("span");
@@ -295,8 +345,9 @@ var createCards = function() {
         cardBackSideView.style.top = (0)+"px";
         cardBackSideView.style.width = (sw/5)+"px";
         cardBackSideView.style.height = (sw/5)+"px";
+        cardBackSideView.style.objectFit = "cover";
         cardBackSideView.src = 
-        "img/card-backside-0.png";
+        "img/card-backside-"+backgroundNo+".png";
         cardBackSideView.style.backfaceVisibility = "hidden";
         //cardBackSideView.style.transform = "rotateY(180deg)";
         cardBackSideView.style.zIndex = "15";
@@ -336,6 +387,7 @@ var createCards = function() {
 
         cards[n].containerElem = cardContainerView;
         cards[n].elem = cardView;
+        cards[n].backSideElem = cardBackSideView;
         cards[n].frontSideElem = cardFrontSideView;
     }
 };
