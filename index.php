@@ -96,6 +96,9 @@ echo "\n";
      </span>
 </p>
 
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1241141335840661"
+     crossorigin="anonymous"></script>
+
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
