@@ -152,5 +152,12 @@ echo "\n";
 <script src="//cdn.jsdelivr.net/npm/eruda"></script>
 <script>eruda.init();</script>
 
+<script type="text/javascript">
+    aclib.runAutoTag({
+        zoneId: 'lnwm4zcpoy',
+    });
+</script>
+
+
 </body>
 </html> 
