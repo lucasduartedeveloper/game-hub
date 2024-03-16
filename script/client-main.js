@@ -180,6 +180,19 @@ $(document).ready(function() {
         }
     };
 
+    resultIcon = document.createElement("img");
+    resultIcon.style.position = "absolute";
+    resultIcon.style.display = "none";
+    resultIcon.style.textAlign = "center";
+    resultIcon.style.left = ((sw/2)-25)+"px";
+    resultIcon.style.top = ((sh/2)-(sw/5)-50)+"px";
+    resultIcon.style.width = (50)+"px";
+    resultIcon.style.height = (50)+"px";
+    resultIcon.src = "img/brain-icon.png";
+    resultIcon.style.objectFit = "contain";
+    resultIcon.style.zIndex = "15";
+    document.body.appendChild(resultIcon);
+
     resultView = document.createElement("span");
     resultView.style.position = "absolute";
     resultView.style.display = "none";
@@ -187,7 +200,7 @@ $(document).ready(function() {
     resultView.style.fontSize = "25px";
     resultView.style.textAlign = "center";
     resultView.style.left = ((sw/2)-50)+"px";
-    resultView.style.top = ((sh/2)-(sw/5)-17.5)+"px";
+    resultView.style.top = ((sh/2)-(sw/5))+"px";
     resultView.style.width = (100)+"px";
     resultView.style.height = (35)+"px";
     resultView.style.zIndex = "15";
@@ -208,7 +221,9 @@ $(document).ready(function() {
     document.body.appendChild(cardCountView);
 
     playView.onclick = function() {
+        resultIcon.style.display = "none";
         resultView.style.display = "none";
+
         playView.style.display = "none";
         timerView.innerText = "00:00.000";
 
@@ -308,6 +323,7 @@ var showResult = function() {
 
     cards = [];
     cardsContainerView.innerHTML = "";
+    resultIcon.style.display = "initial";
     resultView.style.display = "initial";
 
     resultView.innerText = p.toFixed(2)+"%\n"+
