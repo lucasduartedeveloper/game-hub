@@ -91,19 +91,6 @@ $(document).ready(function() {
     playView.style.zIndex = "15";
     document.body.appendChild(playView);
 
-    lifeCountView = document.createElement("div");
-    lifeCountView.style.position = "absolute";
-    lifeCountView.style.color = "#fff";
-    lifeCountView.style.textAlign = "center";
-    lifeCountView.style.left = ((sw/2)-50)+"px";
-    lifeCountView.style.top = ((sh/2)-(sw/2)-100)+"px";
-    lifeCountView.style.width = (100)+"px";
-    lifeCountView.style.height = (35)+"px";
-    lifeCountView.style.zIndex = "15";
-    document.body.appendChild(lifeCountView);
-
-    drawLifeCount();
-
     addressView = document.createElement("span");
     addressView.style.position = "absolute";
     //addressView.style.display = "none";
@@ -228,9 +215,6 @@ $(document).ready(function() {
         timerView.innerText = "00:00.000";
 
         locked = true;
-        totalLifeCount += 5;
-        lifeCount = 5;
-        drawLifeCount();
 
         for (var n = 0; n < cards.length; n++) {
             cards[n].flipped = true;
@@ -315,11 +299,11 @@ $(document).ready(function() {
     createCards();
 });
 
-var totalLifeCount = 0;
-var remainingLifeCount = 0;
+var totalFlipCount = 0;
+var correctFlipCount = 0;
 var elapsedTime = 0;
 var showResult = function() {
-    var p = (100/totalLifeCount)*remainingLifeCount;
+    var p = (100/totalFlipCount)*correctFlipCount;
 
     cards = [];
     cardsContainerView.innerHTML = "";
@@ -329,8 +313,10 @@ var showResult = function() {
     resultView.innerText = p.toFixed(2)+"%\n"+
     moment(elapsedTime).format("mm:ss.SSS");
 
-    totalLifeCount = 0;
-    remainingLifeCount = 0;
+    difficulty = 0;
+
+    totalFlipCount = 0;
+    correctFlipCount = 0;
     elapsedTime = 0;
 };
 
@@ -347,15 +333,6 @@ var animate = function() {
     timerTime = (currentTime-startTime);
     timerView.innerText = 
     moment(timerTime).format("mm:ss.SSS");
-};
-
-var drawLifeCount = function() {
-    var html = "";
-    for (var n = 0; n < 5; n++) {
-        if (lifeCount >= (n+1))
-        html += "<i class=\"fa-solid fa-heart\"></i>";
-    }
-    lifeCountView.innerHTML = html;
 };
 
 var withPictures = false;
@@ -445,7 +422,6 @@ var createCards = function() {
 
 var difficulty = 0;
 
-var lifeCount = 5;
 var locked = true;
 var startFlip = -1;
 var flipCard = function(n) {
@@ -458,8 +434,7 @@ var flipCard = function(n) {
         "initial";
 
         if (cards[n].n != cards[startFlip].n) {
-            lifeCount -= 1;
-            drawLifeCount();
+            totalFlipCount += 1;
 
             setTimeout(function() {
                 this.flipped = true;
@@ -468,8 +443,6 @@ var flipCard = function(n) {
                 cards[startFlip].frontSideElem.style.display = "none";
 
                 startFlip = -1;
-                if (lifeCount > 0) locked = false;
-
                 lockedIndicatorView.innerText = "locked: "+locked;
 
                 startFlipIndicatorView.style.display = startFlip != -1 ? 
@@ -478,6 +451,9 @@ var flipCard = function(n) {
             }.bind(cards[n]), 1000);
         }
         else {
+            totalFlipCount += 1;
+            correctFlipCount += 1;
+
             cards[n].elem.className = "";
             sfxPool.play("audio/correct-choice-sfx.wav");
 
@@ -512,16 +488,8 @@ var flipCard = function(n) {
     "initial" : "none";
     startFlipIndicatorView.innerText = "start flip: "+startFlip;
 
-    if (lifeCount == 0 && !checkCards()) {
+    if (checkCards()) {
         timerPaused = true;
-        elapsedTime += timerTime;
-
-        playView.src = "img/play-again.png";
-        playView.style.display = "initial";
-    }
-    else if (checkCards()) {
-        timerPaused = true;
-        remainingLifeCount += lifeCount;
         elapsedTime += timerTime;
 
         if (difficulty == 6) {
