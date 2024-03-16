@@ -117,7 +117,7 @@ $(document).ready(function() {
     timerView.style.zIndex = "15";
     document.body.appendChild(timerView);
 
-    backgroundNo = 0;
+    backgroundNo = 1;
 
     background0View = document.createElement("img");
     background0View.style.position = "absolute";
@@ -128,7 +128,7 @@ $(document).ready(function() {
     background0View.src = "img/card-backside-0.png";
     background0View.style.objectFit = "cover";
     background0View.style.border = "1px solid #fff";
-    background0View.style.outline = "1px solid #fff";
+    background0View.style.outline = "initial";
     background0View.style.outlineOffset =  "5px";
     background0View.style.zIndex = "15";
     document.body.appendChild(background0View);
@@ -152,7 +152,7 @@ $(document).ready(function() {
     background1View.src = "img/card-backside-1.png";
     background1View.style.objectFit = "cover";
     background1View.style.border = "1px solid #fff";
-    background1View.style.outline = "initial";
+    background1View.style.outline = "1px solid #fff";
     background1View.style.outlineOffset =  "5px";
     background1View.style.zIndex = "15";
     document.body.appendChild(background1View);
@@ -443,6 +443,8 @@ var flipCard = function(n) {
                 cards[startFlip].frontSideElem.style.display = "none";
 
                 startFlip = -1;
+                locked = false;
+
                 lockedIndicatorView.innerText = "locked: "+locked;
 
                 startFlipIndicatorView.style.display = startFlip != -1 ? 
